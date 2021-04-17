@@ -9,9 +9,17 @@
  * file that was distributed with this source code.
  */
 
+use Isolated\Symfony\Component\Finder\Finder;
+
+$polyfillsBootstrap = Finder::create()
+    ->files()
+    ->in(__DIR__.'/vendor/symfony/polyfill-*')
+    ->name('bootstrap.php');
+
 return [
     'whitelist' => [
         'Psy\*',
+        'Symfony\Polyfill\*',
 
         // Old Hoa global functions
         'from',
@@ -20,6 +28,13 @@ return [
         'curry',
         'curry_ref',
     ],
+
+    'files-whitelist' => \array_map(
+         static function ($file) {
+             return $file->getPathName();
+         },
+         \iterator_to_array($polyfillsBootstrap)
+     ),
 
     'patchers' => [
         // Un-patch overly enthusiastic internal constant patching.
