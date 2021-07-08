@@ -21,6 +21,7 @@ use PhpParser\Node\Expr\PropertyFetch;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Expr\Variable;
 use Psy\Exception\FatalErrorException;
+use PhpParser\Node\Expr\ArrayDimFetch;
 
 /**
  * Validate that only variables (and variable-like things) are passed by reference.
@@ -81,7 +82,8 @@ class PassableByReferencePass extends CodeCleanerPass
             $arg->value instanceof Variable ||
             $arg->value instanceof FuncCall ||
             $arg->value instanceof MethodCall ||
-            $arg->value instanceof StaticCall;
+            $arg->value instanceof StaticCall ||
+            $arg->value instanceof ArrayDimFetch;
     }
 
     /**
